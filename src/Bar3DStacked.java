@@ -11,6 +11,7 @@ import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.TickUnitSource;
 import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.labels.CategoryItemLabelGenerator;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
@@ -19,6 +20,7 @@ import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
+import org.jfree.chart.renderer.category.StackedBarRenderer3D;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
@@ -63,29 +65,49 @@ public class Bar3DStacked extends ApplicationFrame {
      */
     private CategoryDataset createDataset() {
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.setValue(05, "A", "1");
-        dataset.setValue(10, "B", "2");
-        dataset.setValue(15, "C", "3");
-        dataset.setValue(10, "A", "4");
-        dataset.setValue(05, "B", "5");
-        dataset.setValue(10, "C", "6");
-        dataset.setValue(15, "A", "7");
-    	
-        dataset.setValue(10, "B", "1");
-        dataset.setValue(15, "C", "2");
-        dataset.setValue(10, "A", "3");
-        dataset.setValue(05, "B", "4");
-        dataset.setValue(10, "C", "5");
-        dataset.setValue(15, "A", "6");
-        dataset.setValue(10, "B", "7");
         
-        dataset.setValue(15, "C", "1");
-        dataset.setValue(10, "A", "2");
-        dataset.setValue(05, "B", "3");
-        dataset.setValue(10, "C", "4");
-        dataset.setValue(15, "A", "5");
-        dataset.setValue(10, "B", "6");
-        dataset.setValue(05, "C", "7");
+    	dataset.setValue(05, "[0-30]",    "BCBS");
+    	dataset.setValue(10, "[31-60]",   "BCBS");
+    	dataset.setValue(15, "[61-90]",   "BCBS");
+    	dataset.setValue(10, "[91-120]",  "BCBS");
+        dataset.setValue(05, "[121-150]", "BCBS");
+        dataset.setValue(10, "[151-180]", "BCBS");
+    	
+        dataset.setValue(05, "[0-30]",    "Champus");
+    	dataset.setValue(10, "[31-60]",   "Champus");
+    	dataset.setValue(15, "[61-90]",   "Champus");
+    	dataset.setValue(10, "[91-120]",  "Champus");
+        dataset.setValue(05, "[121-150]", "Champus");
+        dataset.setValue(10, "[151-180]", "Champus");
+        
+        dataset.setValue(05, "[0-30]",    "Commercial");
+    	dataset.setValue(10, "[31-60]",   "Commercial");
+    	dataset.setValue(15, "[61-90]",   "Commercial");
+    	dataset.setValue(10, "[91-120]",  "Commercial");
+        dataset.setValue(05, "[121-150]", "Commercial");
+        dataset.setValue(10, "[151-180]", "Commercial");
+        
+        dataset.setValue(05, "[0-30]",    "Medicare");
+    	dataset.setValue(10, "[31-60]",   "Medicare");
+    	dataset.setValue(15, "[61-90]",   "Medicare");
+    	dataset.setValue(10, "[91-120]",  "Medicare");
+        dataset.setValue(05, "[121-150]", "Medicare");
+        dataset.setValue(10, "[151-180]", "Medicare");
+        
+        dataset.setValue(05, "[0-30]",    "Medicaid");
+    	dataset.setValue(10, "[31-60]",   "Medicaid");
+    	dataset.setValue(15, "[61-90]",   "Medicaid");
+    	dataset.setValue(10, "[91-120]",  "Medicaid");
+        dataset.setValue(05, "[121-150]", "Medicaid");
+        dataset.setValue(10, "[151-180]", "Medicaid");
+        
+        dataset.setValue(05, "[0-30]",    "Others");
+    	dataset.setValue(10, "[31-60]",   "Others");
+    	dataset.setValue(15, "[61-90]",   "Others");
+    	dataset.setValue(10, "[91-120]",  "Others");
+        dataset.setValue(05, "[121-150]", "Others");
+        dataset.setValue(10, "[151-180]", "Others");
+        
         
     	
         return dataset;
@@ -96,7 +118,29 @@ public class Bar3DStacked extends ApplicationFrame {
     	JFreeChart chart = ChartFactory.createStackedBarChart3D("Title", "categoryAxisLabel", "valueAxisLabel", dataset, PlotOrientation.VERTICAL, true, true, true);
 
     	CategoryItemRenderer renderer = chart.getCategoryPlot().getRenderer();
+    	
+    	
     	renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+    	/*
+    	renderer.setBaseItemLabelGenerator(new CategoryItemLabelGenerator() {
+			
+			@Override
+			public String generateRowLabel(CategoryDataset arg0, int arg1) {
+				return "ROW-" + arg1;
+			}
+			
+			@Override
+			public String generateLabel(CategoryDataset arg0, int arg1, int arg2) {
+				return "LABEL-" + arg1 + "-" + arg2;
+			}
+			
+			@Override
+			public String generateColumnLabel(CategoryDataset arg0, int arg1) {
+				return "COL-" + arg1;
+			}
+		});*/
+    	
+    	
     	renderer.setBaseItemLabelsVisible(true);
     	renderer.setBasePositiveItemLabelPosition(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BASELINE_CENTER));
     	
@@ -106,13 +150,12 @@ public class Bar3DStacked extends ApplicationFrame {
     	
     	CategoryAxis categoryAxis = plot.getDomainAxis();
     	
-    	//categoryAxis.setCategoryMargin(0.0005);
-    	//categoryAxis.set
-    	
     	rangeAxis.setTickLabelPaint(Color.RED);
     	
     	((NumberAxis) rangeAxis).setNumberFormatOverride(NumberFormat.getCurrencyInstance());
     	
+    	
+    	//((StackedBarRenderer3D) renderer).set
     	
     	((BarRenderer3D) renderer).setPositiveItemLabelPositionFallback(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BASELINE_CENTER));
     	((BarRenderer3D) renderer).setNegativeItemLabelPositionFallback(new ItemLabelPosition(ItemLabelAnchor.CENTER, TextAnchor.BASELINE_CENTER));
